@@ -1,13 +1,14 @@
 """
 Part 1
 
-Data collected around the first throat only
-Code below returns p/p_t and M from x = 44.8 [mm] until x = 194.8 [mm] for the two following cases:
-1. fully subsonic conditions (isentropic flow)
-2. supersonic after throat (isentropic flow)
+- Data collected around the first throat only
+- Code below returns p/p_t and M from x = 44.8 [mm] until x = 194.8 [mm] for the two following cases:
+    1. fully subsonic conditions (isentropic flow)
+    2. supersonic after throat (isentropic flow)
 """
 
 import flowtools
+import numpy
 
 gamma = 1.4
 
@@ -25,53 +26,93 @@ A_ratio = [1.175, 1.029, 1.012, 1.002, 1.038, 1.081, 1.136, 1.29, 1.328, 1.365, 
 # flowisentropic2: (MACH, T, P, RHO, A)
 # flownormalshock2: (MACH, T, P, RHO, M, P0, P1)
 
+# interpolate area ratio from position x
+def interpolate_area(position) -> int:
+    if position < x[0] or position > x[-1]:
+        return "Sorry outside of domain"
+    elif position >= x[0] and position <= x[-1]:
+        # within domain
+        area = numpy.interp(position, x, A_ratio)
+
+    return area
+
+
 """
 2. supersonic after throat
+
 - Uses isentropic flow relations
 - Specifies if before (subsonic) or after (supersonic) throat
 since the area-mach relation outputs both a sub and supersonic 
 mach number for a given area ratio
 """
-# compute all mach numbers before and after throat
-mach = []
-counter = 0
-for area in A_ratio:
-    # if before throat (sub)
-    if counter < 4:
-        output = (flowtools.flowisentropic2(gamma,area,'sub'))
+def one_sup():
+    # compute all mach numbers before and after throat using given area ratios
+    mach = []
+    counter = 0
+    for area in A_ratio:
+        # if before throat (sub)
+        if counter < 4:
+            output = (flowtools.flowisentropic2(gamma,area,'sub'))
 
-    # if after throat (sup)
-    if counter > 3:
-        output = (flowtools.flowisentropic2(gamma,area,'sup'))
+        # if after throat (sup)
+        if counter > 3:
+            output = (flowtools.flowisentropic2(gamma,area,'sup'))
 
-    mach.append(output[0])
-    counter += 1
+        mach.append(output[0])
+        counter += 1
 
 
-# compute all pressure ratios before and after throat
-pressure_ratio = []
-for mach_number in mach:
-    output = (flowtools.flowisentropic2(gamma,mach_number,'mach'))
-    pressure_ratio.append(output[2])
-# print(pressure_ratio)
+    # compute all pressure ratios before and after throat
+    pressure_ratio = []
+    for mach_number in mach:
+        output = (flowtools.flowisentropic2(gamma,mach_number,'mach'))
+        pressure_ratio.append(output[2])
+
+
+    return mach, pressure_ratio
 
 
 
 """
 1. fully subsonic conditions
-Must use reference A_2* to use area-mach relation
+
+Must use reference area ratios to legally use area-mach relation
 """
 
 def one_sub(position_measured, pressure_ratio_measured):
-    pressure_ratio = []
+    # pressure_ratio_measured should be p/p_t
     mach = []
-    # use pressure_ratio_measured (p/p_t) at position_measured (x_0) to determine A(x_0)/A* from isentropic relations
-    # read A_t/A(x_0) from given geometry
-    # compute coefficient A_t/A* = A(x_0)/A* A_t/A(x_0) from above ratios
-    # convert local geometric area ratio to local sonic area ratio via above coefficient, A(x)/A* = A_t/A* A(x)/A_t
-    # use this local sonic area ratio to find mach number and pressure ratio
+    pressure_ratio = []
 
-    
-    return pressure_ratio, mach
+    # A. use pressure_ratio_measured (p/p_t) at position_measured (x_0) to determine A(x_0)/A* from isentropic relations
+    output = (flowtools.flowisentropic2(gamma,pressure_ratio_measured,'pres'))
+    Ax0_Astar = output[4]
 
+    # B. read A_t/A(x_0) from given geometry
+    At_Ax0 = 1 / interpolate_area(position_measured) # need reciprocal since area ratio list was A(x)/A_t
+
+    # C. compute coefficient A_t/A* = A(x_0)/A* A_t/A(x_0) from above ratios
+    At_Astar = Ax0_Astar * At_Ax0
+
+    # D. convert local geometric area ratio to local sonic area ratio via above coefficient, A(x)/A* = A_t/A* A(x)/A_t
+    local_sonic_area_ratio = []
+    for area in A_ratio:
+        Ax_Astar = At_Astar * area
+        local_sonic_area_ratio.append(Ax_Astar)
+
+    breakpoint()
+    # E. use these local sonic area ratios to compute the subsonic mach numbers and pressure ratios
+    # they should not be more than 1 i think
+    for value in local_sonic_area_ratio:
+        output = (flowtools.flowisentropic2(gamma,value,'sub'))
+
+        mach.append(output[0])
+        pressure_ratio.append(output[2])
+
+
+    return mach, pressure_ratio
+
+mach_sup, pressure_ratio_sup = one_sup()
+mach_sub, pressure_ratio_sub = one_sub(45,0.997009)
+print(mach_sub)
 
