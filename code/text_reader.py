@@ -1,3 +1,6 @@
+"""
+To read text file columns
+"""
 from pathlib import Path
 import re, pandas
 

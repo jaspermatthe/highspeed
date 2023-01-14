@@ -10,6 +10,9 @@ Part 1
 import flowtools
 import numpy
 
+"""
+CONSTANTS
+"""
 gamma = 1.4
 
 # Position, x, along test section from 44.8 to 194.8 [mm]
@@ -20,11 +23,6 @@ h = [19.204, 16.819, 16.532, 16.372, 16.958, 17.664, 18.553, 21.067, 21.698, 22.
 
 # A/A_t ratio along test section from positions x = 44.8 to x = 194.8 [mm]
 A_ratio = [1.175, 1.029, 1.012, 1.002, 1.038, 1.081, 1.136, 1.29, 1.328, 1.365, 1.499, 1.547, 1.591, 1.631, 1.666, 1.698, 1.725, 1.75, 1.77, 1.788, 1.803, 1.826, 1.83, 1.832, 1.836]
-
-
-"""Default Ouput Formats"""
-# flowisentropic2: (MACH, T, P, RHO, A)
-# flownormalshock2: (MACH, T, P, RHO, M, P0, P1)
 
 # interpolate area ratio from position x
 def interpolate_area(position) -> int:
@@ -37,6 +35,13 @@ def interpolate_area(position) -> int:
     return area
 
 
+
+"""Default Ouput Formats"""
+# flowisentropic2: (MACH, T, P, RHO, A)
+# flownormalshock2: (MACH, T, P, RHO, M, P0, P1)
+
+
+####################################################################################
 """
 2. supersonic after throat
 
@@ -73,6 +78,8 @@ def one_sup():
 
 
 
+
+####################################################################################
 """
 1. fully subsonic conditions
 
