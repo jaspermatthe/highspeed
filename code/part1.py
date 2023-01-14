@@ -97,22 +97,16 @@ def one_sub(position_measured, pressure_ratio_measured):
     # D. convert local geometric area ratio to local sonic area ratio via above coefficient, A(x)/A* = A_t/A* A(x)/A_t
     local_sonic_area_ratio = []
     for area in A_ratio:
-        Ax_Astar = At_Astar * area
+        Ax_At = area
+        Ax_Astar = At_Astar * Ax_At
         local_sonic_area_ratio.append(Ax_Astar)
 
-    breakpoint()
-    # E. use these local sonic area ratios to compute the subsonic mach numbers and pressure ratios
-    # they should not be more than 1 i think
+    # E. use these local sonic area ratios to compute the subsonic mach numbers and pressure ratios using SUPERSONIC function?
     for value in local_sonic_area_ratio:
         output = (flowtools.flowisentropic2(gamma,value,'sub'))
-
         mach.append(output[0])
         pressure_ratio.append(output[2])
 
 
     return mach, pressure_ratio
-
-mach_sup, pressure_ratio_sup = one_sup()
-mach_sub, pressure_ratio_sub = one_sub(45,0.997009)
-print(mach_sub)
 
