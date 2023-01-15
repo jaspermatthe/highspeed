@@ -32,68 +32,61 @@ save_to_folder = 'C://Users/matth/Documents/School/University/Delft/Courses/Year
 markers = ['-.', '-o', '-v', '-x', '-s', '-D']
 
 """
-Part 2 Supersonic Plots
+Part 1 Sub and Supersonic Plots
 """
 # M_nom = 2.1, x_throat = 65.0 mm, h_throat = 16.34 mm
-
-# f, (ax0,ax1,ax2) = plt.subplots(3)
-
-# ax0.plot(x, A_ratio, '-s', color='black')
-# ax0.set_ylabel('$\mathregular{A/A_{t}}$ [-]')
-
-# ax1.plot(x, M_sub, '-x', color='green', label='theoretical')
-# # ax1.plot(x, M_exp, '-v', color='red', label='experimental')
-# ax1.set_ylabel('M [-]')
-# ax1.legend(loc='best')
-
-# ax2.plot(x, p_ratio_sub, '-x', color='green', label='theoretical')
-# # ax2.plot(x, p_ratio_exp, '-v', color='red', label='experimental')
-# ax2.set_ylabel('$\mathregular{p/p_{t}}$ [-]')
-# ax2.legend(loc='best')
-
-# ax0.grid()
-# ax1.grid()
-# ax2.grid()
-# f.supxlabel('x [mm]')
-# plt.savefig(save_to_folder + 'x vs M (fully subsonic case)')
-# plt.show()
-
-
-
-"""
-Part 1 Supersonic Plots
-"""
-# M_nom = 2.1, x_throat = 65.0 mm, h_throat = 16.34 mm
-
-# f, (ax0,ax1,ax2) = plt.subplots(3)
-
-# ax0.plot(x, A_ratio, '-s', color='black')
-# ax0.set_ylabel('$\mathregular{A/A_{t}}$ [-]')
-
-# ax1.plot(x, M_sup, '-x', color='green', label='theoretical')
-# ax1.plot(x, M_exp, '-v', color='red', label='experimental')
-# ax1.set_ylabel('M [-]')
-# ax1.legend(loc='best')
-
-# ax2.plot(x, p_ratio_sup, '-x', color='green', label='theoretical')
-# ax2.plot(x, p_ratio_exp, '-v', color='red', label='experimental')
-# ax2.set_ylabel('$\mathregular{p/p_{t}}$ [-]')
-# ax2.legend(loc='best')
-
-# ax0.grid()
-# ax1.grid()
-# ax2.grid()
-# f.supxlabel('x [mm]')
-# plt.savefig(save_to_folder + 'x vs M (subsonic-supersonic case)')
-# plt.show()
-
 # $\mathregular{u_{p}(t)}$
 
 
-plt.grid()
-plt.plot(x_along_diffuser, diffuser_height, '-')
-plt.xlabel('x_along_diffuser [mm]')
-plt.ylabel('diffuser_height [mm]')
-# plt.legend(loc='best')
-plt.savefig(save_to_folder + 'diffuser geometry')
+f, axs = plt.subplots(2,2)
+
+# ax0.plot(x, A_ratio, '-s', color='black')
+# ax0.set_ylabel('$\mathregular{A/A_{t}}$ [-]')
+
+# subsonic mach
+axs[0,0].plot(x, M_sub, '-x', color='green', label='theoretical')
+axs[0,0].plot(x, M_exp, '-v', color='red', label='experimental')
+axs[0,0].set_ylabel('M [-]')
+axs[0,0].legend(loc='best')
+
+# subsonic pressure ratio
+axs[1,0].plot(x, p_ratio_sub, '-x', color='green', label='theoretical')
+axs[1,0].plot(x, p_ratio_exp, '-v', color='red', label='experimental')
+axs[1,0].set_ylabel('$\mathregular{p/p_{t}}$ [-]')
+axs[1,0].legend(loc='best')
+
+# supersonic mach
+axs[0,1].plot(x, M_sup, '-x', color='green', label='theoretical')
+axs[0,1].plot(x, M_exp, '-v', color='red', label='experimental')
+# axs[0,1].set_ylabel('M [-]')
+axs[0,1].legend(loc='best')
+
+# supersonic pressure ratio
+axs[1,1].plot(x, p_ratio_sup, '-x', color='green', label='theoretical')
+axs[1,1].plot(x, p_ratio_exp, '-v', color='red', label='experimental')
+# axs[1,1].set_ylabel('$\mathregular{p/p_{t}}$ [-]')
+axs[1,1].legend(loc='best')
+
+# ax0.grid()
+axs[0,0].grid()
+axs[1,0].grid()
+axs[0,1].grid()
+axs[1,1].grid()
+f.supxlabel('x [mm]')
+plt.savefig(save_to_folder + 'x vs M (subsonic-supersonic case)')
 plt.show()
+
+
+
+
+
+"""
+Diffuser Plot
+"""
+# plt.grid()
+# plt.plot(x_along_diffuser, diffuser_height, '-')
+# plt.xlabel('x_along_diffuser [mm]')
+# plt.ylabel('diffuser_height [mm]')
+# # plt.legend(loc='best')
+# plt.savefig(save_to_folder + 'diffuser geometry')
+# plt.show()
