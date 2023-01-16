@@ -13,6 +13,8 @@ import numpy
 CONSTANTS
 """
 gamma = 1.4
+x_shock_3 = 630
+x_shock_5 = 530
 
 
 """
@@ -83,7 +85,7 @@ def pressure_ratio_shock_location(shock_location):
     pe3_pt = output[2]
 
 
+    print(f"pe6_pt {pe6_pt}, pe5/pt {pe5_pt}, pe3/pt {pe3_pt}")
+
     return pe6_pt, pe5_pt, pe3_pt
 
-pe6_pt, pe5_pt, pe3_pt =  pressure_ratio_shock_location(630)
-print(f"pe6_pt {pe6_pt}, pe5/pt {pe5_pt}, pe3/pt {pe3_pt}")

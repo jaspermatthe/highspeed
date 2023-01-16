@@ -4,9 +4,9 @@ from pathlib import Path
 
 from part1 import *
 
-"""
-Part 1 Data
-"""
+# """
+# Part 1 Data
+# """
 # CONSTANTS
 x = [44.8, 56.8, 59.8, 62.8, 74.8, 79.8, 84.8, 96.8, 99.8, 102.8, 114.8, 119.8, 124.8, 129.8, 134.8, 139.8, 144.8, 149.8, 154.8, 159.8, 164.8, 176.8, 179.8, 182.8, 194.8]
 y = [19.204, 16.819, 16.532, 16.372, 16.958, 17.664, 18.553, 21.067, 21.698, 22.306, 24.488, 25.275, 25.992, 26.638, 27.219, 27.734, 28.188, 28.584, 28.924, 29.212, 29.45, 29.832, 29.89, 29.935, 30.0]
@@ -17,23 +17,33 @@ diffuser_height = [2.2, 2.4472, 2.6944, 2.9416, 3.1888, 3.436, 3.683200000000000
 
 # THEORETICAL
 # import computed mach numbers and pressure ratios for sub and supersonic cases
-# subsonic case needs a measured pressure ratio (p/p_t) at a known position
-    # one_sub(position, pressure_ratio)
+
+
+
+"""
+subsonic case needs a measured pressure ratio (p/p_t) at a known position
+    one_sub(position, pressure_ratio)
+"""
 M_sup, p_ratio_sup = np.array(one_sup())
 M_sub, p_ratio_sub = np.array(one_sub(45,0.89))
 
 
-# EXPERIMENTAL (TO BE FILLED IN)
+"""
+EXPERIMENTAL (TO BE FILLED IN)
+"""
 M_exp = -M_sup
 p_ratio_exp = -p_ratio_sup
+
 
 save_to_folder = 'C://Users/matth/Documents/School/University/Delft/Courses/Year 2/Q2/Aero II/High Speed Practical/plots/'
 
 markers = ['-.', '-o', '-v', '-x', '-s', '-D']
 
-"""
-Part 1 Sub and Supersonic Plots
-"""
+
+
+# """
+# Part 1 Sub and Supersonic Plots
+# """
 # M_nom = 2.1, x_throat = 65.0 mm, h_throat = 16.34 mm
 # $\mathregular{u_{p}(t)}$
 
@@ -46,13 +56,13 @@ f, axs = plt.subplots(2,2)
 # subsonic mach
 axs[0,0].plot(x, M_sub, '-x', color='green', label='theoretical')
 axs[0,0].plot(x, M_exp, '-v', color='red', label='experimental')
-axs[0,0].set_ylabel('M [-]')
+axs[0,0].set_ylabel('Mach Number, M [-]')
 axs[0,0].legend(loc='best')
 
 # subsonic pressure ratio
 axs[1,0].plot(x, p_ratio_sub, '-x', color='green', label='theoretical')
 axs[1,0].plot(x, p_ratio_exp, '-v', color='red', label='experimental')
-axs[1,0].set_ylabel('$\mathregular{p/p_{t}}$ [-]')
+axs[1,0].set_ylabel('Pressure ratio $\mathregular{p/p_{t}}$ [-]')
 axs[1,0].legend(loc='best')
 
 # supersonic mach
@@ -72,7 +82,7 @@ axs[0,0].grid()
 axs[1,0].grid()
 axs[0,1].grid()
 axs[1,1].grid()
-f.supxlabel('x [mm]')
+f.supxlabel('Position along tunnel, x [mm]')
 plt.savefig(save_to_folder + 'x vs M (subsonic-supersonic case)')
 plt.show()
 
@@ -80,9 +90,9 @@ plt.show()
 
 
 
-"""
-Diffuser Plot
-"""
+# """
+# Diffuser Plot
+# """
 # plt.grid()
 # plt.plot(x_along_diffuser, diffuser_height, '-')
 # plt.xlabel('x_along_diffuser [mm]')
